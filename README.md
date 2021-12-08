@@ -18,16 +18,13 @@ Recipes from Recipetin Eats: https://www.recipetineats.com/
 ## Github Files:
 
   (1) Project Webscraping
-  
-    - The file contains the R code used to scrape the data from https://www.recipetineats.com/ 
+      - The file contains the R code used to scrape the data from https://www.recipetineats.com/ 
   
   (2) Project Data
-  
-    - Data set created by the webscraping
+      - Data set created by the webscraping
   
   (3) Machine Learning - Random Forest
-    
-    - Prediction of recipe popularity using a random forest algorithm
+      - Prediction of recipe popularity using a random forest algorithm
   
   (4) Machine Learning - 
   
