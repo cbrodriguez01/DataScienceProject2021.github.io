@@ -19,15 +19,17 @@ Recipes from Recipetin Eats: https://www.recipetineats.com/
 
   (1) Project Webscraping
       - The file contains the R code used to scrape the data from https://www.recipetineats.com/ 
+  (2) Quality Checks 
+      - Quality checks of webscraped data, addressed and so no HTML file is shown.
   
-  (2) Project Data
+  (3) Project Data
       - Data set created by the webscraping
   
-  (3) Machine Learning - Random Forest
+  (4) Machine Learning - Random Forest
       - Prediction of recipe popularity using a random forest algorithm
   
-  (4) Machine Learning - 
+  (5) Machine Learning - 
   
-  (5) Map of world cuisine popularity
+  (6) Map of world cuisine popularity
   
   

@@ -1,11 +1,13 @@
 ---
-title: "Data Science project"
+title: "Machine Learning - Random Forest"
 author: "Carmen Rodriguez Cabrera"
 date: "11/29/2021"
 output:
   html_document: default
   pdf_document: default
 ---
+
+
 
 ```{r, message=FALSE, warning=FALSE, echo=FALSE}
 library(knitr)
@@ -16,71 +18,17 @@ library(randomForest)
 library(PerformanceAnalytics)
 ```
 
-# Data checks and data cleaning
+## Predicting recipe popularity 
+
+
 
 ```{r}
 recipesdat<-read.csv(file = "recipes_final.csv")
 str(recipesdat) # 1142 recipes
 
 
-#Dataset is at the recipe level- so we can only use recipe level features
-
-#We should assign each recipe an ID_number
-recipesdat<-rowid_to_column(recipesdat, "recipe_ID")
-head(recipesdat)
 ```
 
-
-```{r}
-#Outcome: rating
-summary(recipesdat$rating) #7 missing rating and so we remove missing
-recipesdat %>% filter(is.na(rating)) %>% dplyr::select(recipe, servings)
-#recipesdat<-recipesdat %>% drop_na(rating) #1135 recipes
-
-#table(recipesdat$rating)
-
-
-```
-
-# Data Quality Checks - Addressed 11/30/21
-
-```{r eval=FALSE, include=TRUE}
-####---------Features of interest-----------------####
-#n_ratings, cook_time, prep_time, servings, n_ingredients, n_steps, cuisine(maybe)
-
-#Cook Time and Prep time
-#How do we distinguish hour and minutes from cook or prep time?-- ASK EMMA 
-recipesdat %>% filter(prep_time < 10) # we found typos on the website
-
-#Servings
-summary(recipesdat$servings)
-#16 missing this variable
-#Max= 750--check, and minimum is 1
-
-#recipes with very large serving sizes: 220 and 750
-recipescheck<-recipesdat %>% filter(servings >60) %>% select(recipe)
-#these are supposed to be 750 ml/ 3 cups and 220 ml/7 oz -- might need to drop
-
-
-# Number of ingredients 
-summary(recipesdat$n_ingredients)
-table(recipesdat$n_ingredients)
-#recipesdat %>% filter(n_ingredients ==84)
-
-#not a recipe
-#Asian market shopping list – what I buy at Asian grocery stores!
-#How to clean and cut a whole crab
-
-#Number of steps -- majority say 0
-summary(recipesdat$n_steps)
-table(recipesdat$n_steps)
-nstepszero<-recipesdat %>% filter(n_steps==0)
-
-#Taking a look at cuisine
-recipesdat %>% group_by(cuisine) %>% summarise(n = n()) %>%ungroup() %>%  arrange(desc(n)) # find the 5 most common and then have an other category
-# Western, Caribbean, Asian
-
-```
 
 
 # Distributions of potential outcomes
