@@ -1,5 +1,6 @@
 # Data Science Final Project 2021
-### Group members: Emma Crenshaw, Carmen Rodriguez, Aiza Malik, Ligia Flores
+
+###  **Group members:** Emma Crenshaw, Carmen Rodriguez, Aiza Malik, Ligia Flores
 
 
 
@@ -12,13 +13,15 @@ Determine how well we can predict the popularity of a recipe (i.e., number of re
 
 _Data_
 
-Recipes from Recipetin Eats: https://www.recipetineats.com/
+Recipes from **Recipetin Eats**: https://www.recipetineats.com/
 
 
 ## Github Files:
 
   (1) Project Webscraping
+  
       - The file contains the R code used to scrape the data from https://www.recipetineats.com/ 
+      
       - Output dataset: recipes_final.csv
      
      
