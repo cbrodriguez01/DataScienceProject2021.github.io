@@ -1,5 +1,5 @@
 
-# Predicting Recipes Popularity and Exploration of Recipes from Recipetin Eats
+# Predicting Popularity of Recipes from Recipetin Eats
 
 
 ### Emma Crenshaw, Carmen Rodriguez, Aiza Malik, Ligia Flores
