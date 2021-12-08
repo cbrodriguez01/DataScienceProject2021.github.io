@@ -19,6 +19,7 @@ Recipes from Recipetin Eats: https://www.recipetineats.com/
 
   (1) Project Webscraping
       - The file contains the R code used to scrape the data from https://www.recipetineats.com/ 
+      - Output dataset: recipes_final.csv
      
      
   (2) Quality Checks 
