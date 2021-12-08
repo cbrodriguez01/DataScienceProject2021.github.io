@@ -5,6 +5,7 @@
 
 
 ## Project Overview
+
 It can be hard to judge the quality of online recipes without trying them as a home chef, and it can be hard as a content creator to determine how to best market your recipes. We want to determine if we can predict the popularity of online recipes with just the easily quantifiable information provided with most recipes, such as number of ingredients, cook time, and number of recipe steps. This could allow users to better identify aspects of a recipe that may make it a better choice and could help content-creators finetune their recipe creation.
 
 _Objective_
@@ -20,18 +21,21 @@ Recipes from **Recipetin Eats**: https://www.recipetineats.com/
 
   (1) Project Webscraping
   
-      - The file contains the R code used to scrape the data from https://www.recipetineats.com/ 
-      
-      - Output dataset: recipes_final.csv
+    - The file contains the R code used to scrape the data from https://www.recipetineats.com/ 
+
+    - Output dataset: recipes_final.csv
      
      
   (2) Quality Checks 
+  
       - Quality checks of webscraped data, addressed and so no HTML file is shown.
   
   (3) Project Data
+  
       - Data set created by the webscraping
   
   (4) Machine Learning - Random Forest
+  
       - Prediction of recipe popularity using a random forest algorithm
   
   (5) Machine Learning - 
