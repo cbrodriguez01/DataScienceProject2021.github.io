@@ -17,7 +17,6 @@ library(PerformanceAnalytics)
 
 ## Predicting Recipe Popularity 
 
-
 ```{r}
 #LOAD DATASET
 recipesdat<-read.csv(file = "recipes_final.csv")
@@ -43,8 +42,7 @@ recipesdat %>% ggplot(aes(x = n_ratings)) + geom_histogram(color = "black", fill
 #summary(recipesdat$n_ratings) # 25 NA's
 #recipesdat %>% filter(n_ratings >= 60) %>% dplyr::select(recipe,n_ratings, rating)
 #plot(recipesdat$n_ratings, recipesdat$rating)
-
-#Removed the recipe with 2031 user ratings, and NA's
+#Concluded to remove the recipe with 2031 user ratings, and NA's
 
 ```
 
@@ -102,6 +100,17 @@ ggsave("scatter.png")
 my_data <-recipes_train %>% dplyr::select(n_ratings,cook_time, prep_time, servings, n_ingredients, n_steps)
 chart.Correlation(my_data, histogram=TRUE, pch=19,)
 ```
+###  Preliminary assessment - fit a linear regression model 
+
+```{r}
+#Preliminary- no correlation between features of interest and recipe popularity (number of ratings)
+fit_lm<-lm(n_ratings ~  cook_time + prep_time + n_ingredients + servings + 
+                           n_steps, data = recipes_train)
+
+summary(fit_lm)
+```
+
+Only `cook_time` is significantly associated with recipe popularity. More specifically, recipes with higher cook time have slightly higher number of ratings.
 
 
 ###  Random Forest 
@@ -114,7 +123,6 @@ a) Plotted the full model to illustrate the error rate as we average across more
   
 ```{r}
 set.seed(123)
-
 # Random forest
 #First we fit a model with all predictors of interest
 popularity<-randomForest(n_ratings ~  cook_time + prep_time + n_ingredients + servings + 
@@ -136,12 +144,14 @@ popularity1<-randomForest(n_ratings ~  cook_time + prep_time + n_ingredients + s
 
 c) Assessed performance in the test set
 
+The mean square error for the prediction model is 6098.
+
 ```{r}
 
 #How well does it perform on the test set?
 prediction_fullmodel<- predict(popularity1, newdata = recipes_train)
 
-plot(prediction_fullmodel, recipes_test$n_ratings, ylab =  "Recipe Popularity observed", xlab = "Predicted Recipe Popularity") #that's not very good
+plot(prediction_fullmodel, recipes_test$n_ratings, ylab =  "Recipe Popularity observed", xlab = "Predicted Recipe Popularity in full model") #that's not very good
 abline(0,1)
 
 mean((prediction_fullmodel - recipes_test$n_ratings)^2, na.rm = TRUE)
@@ -168,21 +178,40 @@ varI_table
 ```
 
 
+e) Re-fitting the model with only high importance variables- Reduced model
+
+The mean square error decreased to 5517.4 when only including variables that are predictive.
+
+```{r}
+#Re-run model with only 200 trees
+popularity2<-randomForest(n_ratings ~  cook_time  + n_ingredients, ntree = 200, na.action = na.exclude, data = recipes_train)
+
+#How well does it perform on the test set?
+prediction_reduced<- predict(popularity2, newdata = recipes_train)
+
+plot(prediction_reduced, recipes_test$n_ratings, ylab =  "Recipe Popularity observed", xlab = "Predicted Recipe Popularity in reduced model") #that's not very good
+abline(0,1)
+
+mean((prediction_reduced - recipes_test$n_ratings)^2, na.rm = TRUE)
+
+```
+
+
 ### Summary of results
 
 -  Error rate of the full model  stabilized with around 200 trees but continues to decrease slowly until around 300 or so trees.
 
--  Model did not perform well in the test set. This is because as shown by the correlation matrix  the predictors were uncorrelated with recipe popularity `n_ratings`. Therefore, the random forest algorithm  is forced to choose amongst only "noise" variables at many of its splits leading to poor performance.
+-  Model did not perform well in the test set. This is because as shown by the correlation matrix and preliminary analysis using linear regression only `cook_time` was correlated with recipe popularity `n_ratings`. Therefore, the random forest algorithm  is forced to choose amongst only "noise" variables at many of its splits leading to poor performance.   
 
 - The two most predictive variables as determined by their Gini coefficient were: cook time and number of ingredients.
-
+Reducing the model to only include important variables decreased the mean square error from  6098 to 5517.
 
 
 
 ### References
 - http://developmentaldatascience.org/post/29-01-18_metaforest_no_effect/
 - https://uc-r.github.io/random_forests
-https://stats.stackexchange.com/questions/447863/log-transforming-target-var-for-training-a-random-forest-regressor
+- https://stats.stackexchange.com/questions/447863/log-transforming-target-var-for-training-a-random-forest-regressor
 
 
 

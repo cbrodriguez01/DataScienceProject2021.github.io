@@ -34,6 +34,7 @@ recipesdat %>% filter(is.na(rating)) %>% dplyr::select(recipe, servings)
 #How do we distinguish hour and minutes from cook or prep time?-- ASK EMMA 
 recipesdat %>% filter(prep_time < 10) # we found typos on the website
 
+recipesdat %>% filter(cook_time > 60) %>% dplyr::select(recipe, servings)
 #Servings
 summary(recipesdat$servings)
 #16 missing this variable

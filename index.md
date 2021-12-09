@@ -16,23 +16,32 @@ Determine how well we can predict the popularity of a recipe (i.e., number of re
 
 ##  Data and Approach
 
-We conducted web scrapping  from **Recipetin Eats**: https://www.recipetineats.com/.
-After performing quality checks of the data and data cleaning, we conducted exploratory analysis to examine which recipe features were associated with recipe popularity defined as number of ratings.  We fitted Random Forest regression to predict recipe popularity (number of ratings) of the recipe based on all other features on the dataset. **ADD OTHER ANALYSES**
+We conducted web scrapping  from [RecipetinEats](https://www.recipetineats.com/).
+After performing quality checks of the data and data cleaning, we conducted exploratory analysis to examine which recipe features were associated with recipe popularity defined as number of ratings.  We fitted a Random Forest regression to predict recipe popularity (number of ratings) of the recipe based on all other features on the dataset. 
+
+**ADD OTHER ANALYSES**
 
 
 ## Analysis
 
-### Distribution of outcome
+### Distribution of outcome  Recipe Popularity
 
-**INSERT FIGURE**
+![](dist.png)
 
-### Exploratory Analysis Results
+### Exploratory Analysis 
 
 Using the training set we made some plots to help assess the relationship between recipe popularity  `n_ratings`, and each of the other features of interest in the data set. 
 
-**INSERT FIGURE**
+![](scatter.png)
 
-Looking at the scatterplots below we do not see any patterns  between recipe popularity and any features. Through further assessment using correlations, we confirmed that none of the features are highly correlated with recipe popularity `n_ratings`.
+Looking at the scatterplots below we do not see any patterns  between recipe popularity and any of features. Through further assessment using correlations, we confirmed that none of the features are highly correlated with recipe popularity `n_ratings`.
+
+
+
+### Decision Tree Results
+
+
+
 
 ###  Random Forest Results
 
@@ -40,19 +49,14 @@ Looking at the scatterplots below we do not see any patterns  between recipe pop
 
 -  Model did not perform well in the test set. This is because predictors were uncorrelated with recipe popularity `n_ratings`. Therefore, the random forest algorithm  was forced to choose amongst only "noise" variables at many of its splits leading to poor performance.
 
-
-**INSERT FIGURE**
-
-
-- The two most predictive variables as determined by their Gini coefficient were: cook time and number of ingredients.
-
-
-### OTHER MACHINE LEARNING
+- The two most predictive variables as determined by their Gini coefficient were: cook time and number of ingredients. Reducing the model to only include important variables decreased the mean square error from  6098 to 5517.
 
 
 
 
-### VISUALIZATION
+
+
+### MAP 
 
 
 
