@@ -1,20 +1,17 @@
-title: My Website
 theme: jekyll-theme-cayman
 repository: "cbrodriguez01/DataScienceProject2021.github.io"
 
-# Build settings
 plugins:
-  - jekyll-feed
-  - jekyll-sitemap
-
-# A list of the pages to display in the navigation bar
-header_pages:
-
-# Exclude from processing.
-# The following items will not be processed, by default. Create a custom list
-# to override the default setting.
-exclude:
-  - Gemfile
-  - Gemfile.lock
-  - node_modules
-  - update_boostrap.sh
+  - jekyll-relative-links
+relative_links:
+  enabled: true
+  collections: true
+include:
+  - CONTRIBUTING.md
+  - README.md
+  - LICENSE.md
+  - COPYING.md
+  - CODE_OF_CONDUCT.md
+  - CONTRIBUTING.md
+  - ISSUE_TEMPLATE.md
+  - PULL_REQUEST_TEMPLATE.md
