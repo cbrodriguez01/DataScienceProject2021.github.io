@@ -22,17 +22,13 @@ After performing quality checks of the data and data cleaning, we conducted expl
 
 ## Analysis
 
-### Distribution of outcome  Recipe Popularity
-
-![](dist.png)
-
 ### Exploratory Analysis 
 
 Using the training set we made some plots to help assess the relationship between recipe popularity  `n_ratings`, and each of the other features of interest in the data set. 
 
-![](scatter.png)
+# ![](scatter.png)
 
-Looking at the scatterplots below we do not see any patterns  between recipe popularity and any of features. Through further assessment using correlations, we confirmed that none of the features are highly correlated with recipe popularity `n_ratings`.
+Looking at the scatterplots we do not see any relationship patterns between recipe popularity and any of features. Through further assessment using correlations, we confirmed that none of the features had adequate correlation with recipe popularity `n_ratings`.
 
 
 
