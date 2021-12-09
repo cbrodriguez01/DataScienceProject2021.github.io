@@ -25,7 +25,7 @@ After performing quality checks of the data and data cleaning, we conducted expl
 
 Using the training set we made some plots to help assess the relationship between recipe popularity  `n_ratings`, and each of the other features of interest in the data set. 
 
-# ![](scatter.png)
+**INSERT IMAGE- NEED TO BE SMALL **
 
 Looking at the scatterplots we do not see any relationship patterns between recipe popularity and any of features. Through further assessment using correlations, we confirmed that none of the features had adequate correlation with recipe popularity `n_ratings`.
 
