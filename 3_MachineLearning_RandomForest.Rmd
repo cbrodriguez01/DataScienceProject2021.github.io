@@ -31,6 +31,7 @@ Initially we were interested in predicting rating, however, the distribution of 
 ```{r message=FALSE, warning=FALSE}
 recipesdat %>% ggplot(aes(x = rating)) + geom_histogram(color = "black", fill = "white") + labs( x = "User Ratings", y= "Counts", title = "Distribution of user ratings (Number of ratings)") 
 # left skewed distribution- most recipes are highly rated --
+
 ```
 
 
@@ -38,19 +39,23 @@ recipesdat %>% ggplot(aes(x = rating)) + geom_histogram(color = "black", fill = 
 #Take a look at number of ratings
 recipesdat %>% ggplot(aes(x = n_ratings)) + geom_histogram(color = "black", fill = "white", binwidth = 50) + labs( x = "Number of ratings", title = "Distribution of Recipe Popularity (Number of ratings)") 
 
+
 #summary(recipesdat$n_ratings) # 25 NA's
 #recipesdat %>% filter(n_ratings >= 60) %>% dplyr::select(recipe,n_ratings, rating)
 #plot(recipesdat$n_ratings, recipesdat$rating)
 
 #Removed the recipe with 2031 user ratings, and NA's
+
 ```
 
 
 ```{r}
 #Remove missing and recipe with 2031
 recipesdat<-recipesdat %>% filter(n_ratings != 2031) %>% drop_na(n_ratings) #1116
-recipesdat %>% ggplot(aes(x = n_ratings)) + geom_histogram(color = "black", fill = "white", binwidth = 50) + labs( x = "Number of ratings", title = "Distribution of Recipe Popularity (Number of ratings)") 
+dist<-recipesdat %>% ggplot(aes(x = n_ratings)) + geom_histogram(color = "black", fill = "white", binwidth = 50) + labs( x = "Number of ratings", title = "Distribution of Recipe Popularity (Number of ratings)") 
 
+dist
+ggsave("dist.png")
 ```
 
 
@@ -73,7 +78,7 @@ Using the training set we  make some plots to help assess the relationship betwe
 Looking at the scatterplots below we do not see any patterns  between recipe popularity and any features. This was further confirmed using a correlation matrix, where we can see that none of the features are highly correlated with recipe popularity `n_ratings`.
 
 ```{r message=FALSE, warning=FALSE}
-recipes_train%>% 
+scatter<-recipes_train%>% 
   gather(predictor, value, c(cook_time, prep_time, servings, n_ingredients, n_steps)) %>% 
   ggplot(aes(x = value, y = n_ratings)) + 
   geom_point() + 
@@ -86,13 +91,16 @@ recipes_train%>%
                               "n_steps" = "Number of steps"))) + 
   xlab(NULL) + ylab("Recipe Popularity (Number of ratings)")
 
+scatter
+
+ggsave("scatter.png")
+
 ```
 
 
 ```{r message=FALSE, warning=FALSE}
 my_data <-recipes_train %>% dplyr::select(n_ratings,cook_time, prep_time, servings, n_ingredients, n_steps)
-chart.Correlation(my_data, histogram=TRUE, pch=19)
-
+chart.Correlation(my_data, histogram=TRUE, pch=19,)
 ```
 
 
@@ -132,9 +140,16 @@ c) Assessed performance in the test set
 
 #How well does it perform on the test set?
 prediction_fullmodel<- predict(popularity1, newdata = recipes_train)
-plot(prediction_fullmodel, recipes_test$n_ratings) #that's not very good
+
+plot(prediction_fullmodel, recipes_test$n_ratings, ylab =  "Recipe Popularity observed", xlab = "Predicted Recipe Popularity") #that's not very good
 abline(0,1)
+
 mean((prediction_fullmodel - recipes_test$n_ratings)^2, na.rm = TRUE)
+
+# png("fit.png")
+# print(fit)
+# dev.off()
+
 
 ```
 
