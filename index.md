@@ -16,7 +16,7 @@ Determine how well we can predict the popularity of a recipe (i.e., number of re
 ##  Data and Approach
 
 We conducted web scraping  from [RecipetinEats](https://www.recipetineats.com/), taking data from every recipe on the website.
-After performing quality checks of the data and data cleaning, we conducted exploratory analysis to examine which recipe features were associated with recipe popularity defined as number of ratings.  We fitted a Random Forest regression to predict recipe popularity (number of ratings) of the recipe based on all other features on the dataset, a decision tree regression and one visualization to see which recipes were most popular based on cuisine.
+After performing quality checks of the data and data cleaning, we conducted exploratory analysis to examine which recipe features were associated with recipe popularity defined as number of ratings.  We fitted a Random Forest regression to predict recipe popularity (number of ratings) of the recipe based on all other features on the dataset, a decision tree regression and  visualizations to see which recipes were most popular based on cuisine.
 
 The variables available are described below:
 
@@ -48,7 +48,7 @@ The variables available are described below:
   - **iron**: mg of iron per serving
 
 
-**ADD OTHER ANALYSES**
+
 
 
 ## Analysis
@@ -62,18 +62,9 @@ Using the training set we made some plots to help assess the relationship betwee
 Looking at the scatterplots we do not see any relationship patterns between recipe popularity and any of features. Through further assessment using correlations, we confirmed that none of the features had adequate correlation with recipe popularity `n_ratings`.
 
 
+### Exploring Recipe popularity by Cuisine 
 
 
-
-
-
-###  Random Forest Results
-
--  Error rate of the full model stabilized with around 200 trees but continues to decrease slowly until around 300 or so trees.
-
--  Model did not perform well in the test set. This is because predictors were uncorrelated with recipe popularity `n_ratings`. Therefore, the random forest algorithm  was forced to choose amongst only "noise" variables at many of its splits leading to poor performance.
-
-- The two most predictive variables as determined by their Gini coefficient were: cook time and number of ingredients. Reducing the model to only include important variables decreased the mean square error from  6098 to 5517.
 
 
 ### Decision Tree Results
@@ -90,7 +81,7 @@ Now fitting a decision tree model that predicts `n_ratings` using cook time,prep
 
 The tree suggests that the recipes with higher cook time corresponds to lower total number of ratings and includes the variable that we identified as being significant in the linear model (`n_rating`), plus number of steps and number of ingredients.
 
-##Exploring Cuisine Categories as Potential Predictor For Decision Tree Model
+### Exploring Cuisine Categories as Potential Predictor For Decision Tree Model
 
 In the RecipeTin Eats website, there are  9 cuisine categories (Asian,French,Greek,Indian,Italian,Mediterranean,Mexican,Middle Eastern, and South America). Yet, it turns out there is actually 178 different type of cuisine categories in this website after webscraping, making it difficult to have cuisine as a predictor. We do wonder in that if the type of cuisine plays any role in popularity of a recipe and wanted to create a world map of the different types of cuisines (which is shown later on). We all experienced at some point random cravings of certain types of food. With that said, let us explore the relationship between number of ratings and different types of cuisines. In order to see the correlation and include the `cuisine` predictor in the decision tree model, we regrouped the 178 different types of cuisines from this website into 12 categories (similar to the cuisine category displayed on recipetin eats website). The categories are: 1) European/Western, 2) Americanized_cultural_food,3) Asian, 4) Australian,5) French,6) Indian,7) Italian,8)Mediterranean,9) Mexican, 10) Middle Eastern, 11) South American/Caribbean, and 12) Other which includes categories of dog food, holidays, and categories not in particular to regions.
 
@@ -116,11 +107,17 @@ Here we can also see that although we added the new predictor variable `cuisine`
 Exploring still on the cuisine categories, we will now look at a world map/heat map of the different cuisines we have here.
 
 
-### MAP 
+###  Random Forest Results
+
+-  Error rate of the full model stabilized with around 200 trees but continues to decrease slowly until around 300 or so trees.
+
+-  Model did not perform well in the test set. This is because predictors were uncorrelated with recipe popularity `n_ratings`. Therefore, the random forest algorithm  was forced to choose amongst only "noise" variables at many of its splits leading to poor performance.
+
+- The two most predictive variables as determined by their Gini coefficient were: cook time and number of ingredients. Reducing the model to only include important variables decreased the mean square error from  6098 to 5517.
 
 
 
-### SCREENCAST VIDEO LINK
+### Screencast Video 
 
 
 
