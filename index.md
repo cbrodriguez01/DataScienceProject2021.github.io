@@ -67,6 +67,7 @@ Looking at the scatterplots we do not see any relationship patterns between reci
 
 
 
+
 ### Decision Tree Results
 
 Continuing the section of machine learning, let us predict recipe popularity by fitting decision tree model.
