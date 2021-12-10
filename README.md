@@ -10,16 +10,7 @@
    - The file contains the R code used to scrape the data from https://www.recipetineats.com/ 
     
    - Output dataset: recipes_final.csv
-         
-     
-(2) Quality Checks 
-  
-  - Quality checks of webscraped data, addressed and so no HTML file is shown.
-  
-(3) Project Data
-  
-  - Data set created by the webscraping
-  - The variables available are described below:
+   - The variables available are described below:
   
     - *recipe_*: Name of the recipe
     - *cook_time*: Amount of time the recipe takes to actively cook (minutes)
@@ -48,12 +39,16 @@
     - *calcium*: mg of calcium per serving
     - *iron*: mg of iron per serving
 
+         
+(2) Quality Checks 
+  
+  - Quality checks of webscraped data, addressed and so no HTML file is shown.
   
 (4) Machine Learning - Random Forest
   
   - Prediction of recipe popularity using a random forest algorithm
   
-(5) Machine Learning - 
+(5) Machine Learning
   
 (6) Map of world cuisine popularity
 
