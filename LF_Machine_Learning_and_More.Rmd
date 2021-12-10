@@ -59,7 +59,7 @@ fit_regtree = tree(n_ratings~cook_time + prep_time + n_ingredients + servings +
 plot(fit_regtree)
 text(fit_regtree, pretty = 0)
 ```
-The tree suggests that the recipes with higher cook time corresponds to lower total number of ratings.
+The tree suggests that the recipes with higher cook time corresponds to lower total number of ratings and includes the variable that we identified as being significant in the linear model (`n_rating`), plus number of steps and number of ingredients.
 
 
 
@@ -75,7 +75,7 @@ The tree suggests that the recipes with higher cook time corresponds to lower to
 
 #Predicting Popularity Now including Cuisine Categories 
 
-In the RecipeTin website, there are technically 9 cusine categories (Asian,French,Greek,Indian,Italian,Mediterranean,Mexican,Middle Eastern, and South America). Yet, it turns out there is actually 178 different type of cuisine categories in this website after webscrapping, making it difficult to have cuisine as a predictor. We do wonder in that if the type od cuisine plays any role in popularity of a recipe and wanted to create a world map of the different types of cuisines (which is shown later on). We all experienced at some point random cravings of certain types of food. With that said, let us explore the relationship between number of ratings and different types of cuisines. In order to see the correlation and include the `cuisine` predictor in the decision tree model, we regrouped the 178 different types of cuisines from this websites into 12 categories (similar to the cuisine category from the 1) European/Western, 2) Americanized_cultural_food,3) Asian, 4) Australian,5) French,6) Indian,7) Italian,8)Mediterranean,9) Mexican, 10) Middle Eastern, 11) South American/Caribbean, and 12) other which includes categories of dog food, holidays, and categories not in particular to region.
+In the RecipeTin Eats website, there are  9 cuisine categories (Asian,French,Greek,Indian,Italian,Mediterranean,Mexican,Middle Eastern, and South America). Yet, it turns out there is actually 178 different type of cuisine categories in this website after webscraping, making it difficult to have cuisine as a predictor. We do wonder in that if the type of cuisine plays any role in popularity of a recipe and wanted to create a world map of the different types of cuisines (which is shown later on). We all experienced at some point random cravings of certain types of food. With that said, let us explore the relationship between number of ratings and different types of cuisines. In order to see the correlation and include the `cuisine` predictor in the decision tree model, we regrouped the 178 different types of cuisines from this website into 12 categories (similar to the cuisine category displayed on recipetin eats website). The categories are: 1) European/Western, 2) Americanized_cultural_food,3) Asian, 4) Australian,5) French,6) Indian,7) Italian,8)Mediterranean,9) Mexican, 10) Middle Eastern, 11) South American/Caribbean, and 12) Other which includes categories of dog food, holidays, and categories not in particular to regions.
 
 
 ```{r}
@@ -347,7 +347,7 @@ library(ggpubr)
 
 p1<-recipesdat_new%>%drop_na(cuisine)%>%
   ggplot(aes(x=cuisine_cat,y=n_ratings,color=cuisine)) + geom_boxplot() +
-  xlab("cuisine category")+ylab("number of ratings") +ggtitle("Number of Ratings per cuisine category")
+  xlab("cuisine category")+ylab("number of ratings") +ggtitle("Number of Ratings per Cuisine Category")
   
 
 p1+ stat_compare_means() 
