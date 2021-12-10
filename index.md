@@ -65,7 +65,7 @@ Looking at the scatterplots we do not see any relationship patterns between reci
 ### Exploring Recipe popularity by Cuisine 
 
 
-We next wanted to explore recipe popularity by cuisine. The categories are: 1) European/Western, 2) Americanized_cultural_food,3) Asian, 4) Australian,5) French,6) Indian,7) Italian,8) Mediterranean,9) Mexican, 10) Middle Eastern, 11) South American/Caribbean, and 12) Other which includes categories of dog food, holidays, and categories not in particular to regions.The type of cuisine categories breakdown is explained on the README file.
+We next wanted to explore recipe popularity by cuisine. The categories are: 1) European/Western, 2) Americanized_cultural_food,3) Asian, 4) Australian,5) French,6) Indian,7) Italian,8) Mediterranean,9) Mexican, 10) Middle Eastern, 11) South American/Caribbean, and 12) Other which includes categories of dog food, holidays, and categories not in particular to regions.The type of cuisine categories breakdown is explained on the RM file.
 
 
 ![](cuisine_cat_barplot.png)
