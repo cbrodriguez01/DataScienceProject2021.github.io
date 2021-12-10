@@ -44,13 +44,16 @@
   
   - Quality checks of webscraped data, addressed and so no HTML file is shown.
   
-(4) Machine Learning - Random Forest
+(3) Machine Learning - Random Forest
   
   - Prediction of recipe popularity using a random forest algorithm
   
-(5) Machine Learning
+(4) Machine Learning
   
-(6) Map of world cuisine popularity
+(5) Map of world cuisine popularity
+
+Purpose: we decided to visualize which cuisines, grouped by country, are the most interacted with (have the most ratings) and which ones are most common (number of recipes of a specific cuisine).
+Code generates two maps.
 
   
 ## Project Website
