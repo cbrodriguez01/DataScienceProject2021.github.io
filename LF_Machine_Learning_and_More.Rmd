@@ -357,7 +357,6 @@ Here we see there is a significance between the different types of cuisines and 
 
 
 
-
 ```{r}
 
 #recipesdat_new
