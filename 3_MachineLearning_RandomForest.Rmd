@@ -108,10 +108,12 @@ dev.off()
 
 ```{r message=FALSE, warning=FALSE}
 my_data <-recipes_train %>% dplyr::select(n_ratings,cook_time, prep_time, servings, n_ingredients, n_steps)
-corr<-chart.Correlation(my_data, histogram=TRUE, pch=19,)
+chart.Correlation(my_data, histogram=TRUE, pch=19,)
 
-png("corr.png", width = 400, height = 400)
-corr
+
+png("corr.png", width = 600, height = 600)
+chart.Correlation(my_data, histogram=TRUE, pch=19,)
+#png("corr.png", width = 400, height = 400)
 dev.off()
 
 

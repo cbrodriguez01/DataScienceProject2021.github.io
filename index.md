@@ -28,53 +28,58 @@ Using the training set we made some plots to help assess the relationship betwee
 
 ![](scatter.png)
 
-Looking at the scatterplots we do not see any relationship patterns between recipe popularity and any of features. Through further assessment using correlations, we confirmed that none of the features had adequate correlation with recipe popularity `n_ratings`.
+Looking at the scatterplots we do not see any relationship patterns between recipe popularity and any of features. Through further assessment using correlations, we noted that only recipe cook time  had a significant adequate correlation with recipe popularity.
 
+![](corr.png)
 
 ### Exploring Recipe popularity by Cuisine 
 
 
-We next wanted to explore recipe popularity by cuisine. The categories are: 1) European/Western, 2) Americanized_cultural_food,3) Asian, 4) Australian,5) French,6) Indian,7) Italian,8) Mediterranean,9) Mexican, 10) Middle Eastern, 11) South American/Caribbean, and 12) Other which includes categories of dog food, holidays, and categories not in particular to regions.The type of cuisine categories breakdown is explained on the RM file.
-
+We next wanted to explore recipe popularity by cuisine. We categorized this as: 1) European/Western, 2) Americanized_cultural_food,3) Asian, 4) Australian,5) French,6) Indian,7) Italian,8) Mediterranean,9) Mexican, 10) Middle Eastern, 11) South American/Caribbean, and 12) Other which includes categories of dog food, holidays, and categories not in particular to regions. 
 
 ![](cuisine_cat_barplot.png)
 
-As shown above, in terms of the most popular cuisine category, the European/Western category has the most total number of ratings compared to the other cuisine categories. This however is not enough to imply that the type of cuisine plays a factor in predicting popularity in recipes given that the way the website identified the cuisine type of a recipe as Western was general.Let us now explore the type of cuisine variable as a potential predictor.
+As shown above, in terms of the most popular cuisine category, the European/Western category has the highest number  of ratings compared to the other cuisine categories. 
 
 ![](cuisine_cat_boxplot.png)
 
-Here we see there is a significance between the different types of cuisines and number of ratings but it is not enough for us to say the category/type of cuisine is a predictor for popularity of recipe. We will now explore more by fitting a decision tree and linear regression model with and without the cuisine category variable.
+Here we see there is a significance between the different types of cuisines and number of ratings but it is not enough for us to say the category/type of cuisine is a predictor for popularity of recipe. 
 
-We decided to visualize which cuisines, grouped by country, are the most interacted with (have the most ratings) and which ones are most common (number of recipes of a specific cuisine).
+Additionally, we decided to visualize which cuisines, grouped by country, are the most interacted with (have the most ratings) and which ones are most common (number of recipes of a specific cuisine).
 
-The most common cuisine entries in order are: Mexican, Italian, Chinese, Thai, French, Indian, Greek, Vietnamese, American and Japanese
+The most common cuisine entries in order are: Mexican, Italian, Chinese, Thai, French, Indian, Greek, Vietnamese, American and Japanese.
 
 ![](Map_Recipes.png)
 
-The most interacted-with cuisine entries in order are: Thai, Mexican, Chinese, Indian, Italian, Greek, Vietnamese, French, American, Japanese
+The most interacted-with cuisine entries in order are: Thai, Mexican, Chinese, Indian, Italian, Greek, Vietnamese, French, American, Japanese.
 
 ![](Map_Ratings.png)
 
+Based on these preliminary findings we conducted regression analyses using decision trees and random forest regression.
+
 ### Decision Tree Results
 
-Let us now predict recipe popularity by fitting decision tree model.
-For the purpose of the project, predictors of interest would be in terms of convenience (this means including prep time, cook time, number of steps, number of ingredients, servings).
+Firstly, we predicted recipe popularity by fitting a decision tree regression.
+For the purpose of the project, predictors of interest included: prep time, cook time, number of steps, number of ingredients, and servings.
 
-From preliminary analysis (by a linear regression model), we found that that only the coefficient for cook time is significant at a 0.05 threshold.
+From preliminary analysis (by a multivariate linear regression model), we further confirmed that cook time is significantly associated with recipe popularity.
 
-Now fitting a decision tree model that predicts `n_ratings` using cook time,prep time,servings, number of ingredients, and number of steps in the training data, we get the following decision tree:
+Fitting the decision tree model that predicts `n_ratings` using cook time,prep time,servings, number of ingredients, and number of steps in the training data, resulted in the following  tree:
 
 ![](decisiontree1.png)
 
-The tree suggests that the recipes with higher cook time corresponds to higher total number of ratings and includes the variable that we identified as being significant in the linear model (`n_rating`), plus number of steps and number of ingredients. We re-ran the decision tree now including cuisine type variable and there were no differences in the results.
+The tree suggests that the recipes with higher cook time corresponds to higher total number of ratings and includes the variable that we identified as being significant in the linear regression model, and number of steps and number of ingredients. We re-fitted the decision tree  including the cuisine type variable and there were no differences in the results.
 
 ###  Random Forest Results
 
+We conducted Random Forest regression to predict recipe popularity (number of ratings) of the recipe based on other features: cook time,prep time,servings, number of ingredients, and number of steps. Results are summarized below.
+
 -  Error rate of the full model stabilized with around 200 trees but continues to decrease slowly until around 300 or so trees.
 
--  Model did not perform well in the test set. This is because predictors were uncorrelated with recipe popularity `n_ratings`. Therefore, the random forest algorithm  was forced to choose amongst only "noise" variables at many of its splits leading to poor performance.
-
 - The two most predictive variables as determined by their Gini coefficient were: cook time and number of ingredients. Reducing the model to only include important variables decreased the mean square error from  6098 to 5517.
+
+- Overall, the model did not perform well in the test set. This is because predictors were uncorrelated with recipe popularity `n_ratings`. Therefore, the random forest algorithm  was forced to choose amongst only "noise" variables at many of its splits leading to poor performance.
+
 
 
 
