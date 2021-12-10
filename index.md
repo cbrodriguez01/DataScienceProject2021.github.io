@@ -16,7 +16,7 @@ Determine how well we can predict the popularity of a recipe (i.e., number of re
 ##  Data and Approach
 
 We conducted web scraping  from [RecipetinEats](https://www.recipetineats.com/), taking data from every recipe on the website.
-After performing quality checks of the data and data cleaning, we conducted exploratory analysis to examine which recipe features were associated with recipe popularity defined as number of ratings.  We fitted a Random Forest regression to predict recipe popularity (number of ratings) of the recipe based on all other features on the dataset. 
+After performing quality checks of the data and data cleaning, we conducted exploratory analysis to examine which recipe features were associated with recipe popularity defined as number of ratings.  We fitted a Random Forest regression to predict recipe popularity (number of ratings) of the recipe based on all other features on the dataset, a decision tree regression and one visualization to see which recipes were most popular based on cuisine.
 
 The variables available are described below:
 
@@ -47,6 +47,7 @@ The variables available are described below:
   - **calcium**: mg of calcium per serving
   - **iron**: mg of iron per serving
 
+
 **ADD OTHER ANALYSES**
 
 
@@ -56,10 +57,9 @@ The variables available are described below:
 
 Using the training set we made some plots to help assess the relationship between recipe popularity  `n_ratings`, and each of the other features of interest in the data set. 
 
-**INSERT IMAGE- NEED TO BE SMALL **
+![](scatter.png)
 
 Looking at the scatterplots we do not see any relationship patterns between recipe popularity and any of features. Through further assessment using correlations, we confirmed that none of the features had adequate correlation with recipe popularity `n_ratings`.
-
 
 
 ### Decision Tree Results

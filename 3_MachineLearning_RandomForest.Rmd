@@ -53,7 +53,12 @@ recipesdat<-recipesdat %>% filter(n_ratings != 2031) %>% drop_na(n_ratings) #111
 dist<-recipesdat %>% ggplot(aes(x = n_ratings)) + geom_histogram(color = "black", fill = "white", binwidth = 50) + labs( x = "Number of ratings", title = "Distribution of Recipe Popularity (Number of ratings)") 
 
 dist
-ggsave("dist.png", limitsize = TRUE)
+# ggsave("dist.png", limitsize = TRUE)
+
+png("dist.png", width = 400, height = 400)
+dist
+dev.off()
+
 ```
 
 
@@ -91,7 +96,12 @@ scatter<-recipes_train%>%
 
 scatter
 
-ggsave("scatter.png", limitsize = TRUE)
+#ggsave("scatter.png", limitsize = TRUE)
+
+png("scatter.png", width = 600, height = 400)
+scatter
+dev.off()
+
 
 ```
 
