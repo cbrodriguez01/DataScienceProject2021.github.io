@@ -52,7 +52,7 @@
   
 (5) Map of world cuisine popularity
 
-Code generates two maps to visualize frequency and popularity of cuisines (country level)
+  - Code generates two maps to visualize frequency and popularity of cuisines (country level)
 
   
 ## Project Website
