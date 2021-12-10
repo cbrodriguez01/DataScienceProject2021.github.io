@@ -1,6 +1,8 @@
 ---
 title: "R Notebook"
-output: html_notebook
+output:
+  html_document:
+    df_print: paged
 ---
 ```{r}
 load("/Users/aizamalik/Desktop/BST260/Project/BST260_project_data.RDa")
@@ -40,7 +42,7 @@ To simplify the mapping analysis I chose to focus on entries that gave us countr
 
 ```{r}
 common <- commonvalues2 %>% filter(cuisine %in% c("Mexican", "Italian", "Chinese", "Thai", "French", "Indian", "Greek", "Vietnamese", "American", "Asian, Japanese")) %>% arrange(desc(count.x))
-Countries = c("Mexico", "Italy", "China", "Thailand", "France", "India", "Greece", "Vietnam", "United States", "Japan")
+Countries = c("Mexico", "Italy", "China", "Thailand", "France", "India", "Greece", "Vietnam", "USA", "Japan")
 common$region <- Countries
 ```
 ```{r}
@@ -49,24 +51,35 @@ world_map_data <- left_join(world_map, common, by = "region")
 
 World maps mapping the cuisines with the most number of recipes and which cuisine was interacted with most frequently (measured by number of ratings for each cuisine)
 
+The most common cuisine entries in order are: Mexican, Italian, Chinese, Thai, French, Indian, Greek, Vietnamese, American and Japanese
+
+The most interacted-with cuisine entries in order are: Thai, Mexican, Chinese, Indian, Italian, Greek, Vietnamese, French, American, Japanese
 ```{r}
 library(RColorBrewer)
-world_map_data %>% ggplot(aes(x = long, y = lat, group = group, fill = count.x)) +
-   geom_polygon(color = "white") + scale_fill_gradientn(colors = brewer.pal(5, "Reds")) + 
+map1 <- world_map_data %>% ggplot(aes(x = long, y = lat, group = group, fill = count.x)) +
+   geom_polygon(color = "white") + scale_fill_gradientn(colors = brewer.pal(5, "Reds"),name="Number of Recipes") + 
    theme(panel.grid.major = element_blank(), 
          panel.background = element_blank(),
          axis.title = element_blank(), 
          axis.text = element_blank(),
          axis.ticks = element_blank()) + ggtitle("Most Popular Recipes")
+map1
+png("Map_Recipes.png", width = 700, height = 400)
+map1
+dev.off()
 ```
 ```{r}
 library(RColorBrewer)
-world_map_data %>% ggplot(aes(x = long, y = lat, group = group, fill = count.y)) +
-   geom_polygon(color = "white") + scale_fill_gradientn(colors = brewer.pal(5, "Reds")) + 
+map2 <- world_map_data %>% ggplot(aes(x = long, y = lat, group = group, fill = count.y)) +
+   geom_polygon(color = "white") + scale_fill_gradientn(colors = brewer.pal(5, "Reds"), name="Number of Ratings") +
    theme(panel.grid.major = element_blank(), 
          panel.background = element_blank(),
          axis.title = element_blank(), 
          axis.text = element_blank(),
          axis.ticks = element_blank()) + ggtitle("Most Interacted-With Recipes")
+map2
+png("Map_Ratings.png", width = 700, height = 400)
+map2
+dev.off()
 ```
 

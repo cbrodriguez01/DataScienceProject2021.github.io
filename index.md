@@ -76,6 +76,15 @@ As shown above, in terms of the most popular cuisine category, the European/West
 
 Here we see there is a significance between the different types of cuisines and number of ratings but it is not enough for us to say the category/type of cuisine is a predictor for popularity of recipe. We will now explore more by fitting a decision tree and linear regression model with and without the cuisine category variable.
 
+We decided to visualize which cuisines, grouped by country, are the most interacted with (have the most ratings) and which ones are most common (number of recipes of a specific cuisine).
+
+The most common cuisine entries in order are: Mexican, Italian, Chinese, Thai, French, Indian, Greek, Vietnamese, American and Japanese
+
+![](Map_Recipes.png)
+
+The most interacted-with cuisine entries in order are: Thai, Mexican, Chinese, Indian, Italian, Greek, Vietnamese, French, American, Japanese
+
+![](Map_Ratings.png)
 
 ### Decision Tree Results
 
