@@ -52,8 +52,7 @@
   
 (5) Map of world cuisine popularity
 
-Purpose: we decided to visualize which cuisines, grouped by country, are the most interacted with (have the most ratings) and which ones are most common (number of recipes of a specific cuisine).
-Code generates two maps.
+Code generates two maps to visualize frequency and popularity of cuisines (country level)
 
   
 ## Project Website
