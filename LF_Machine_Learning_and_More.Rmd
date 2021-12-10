@@ -32,8 +32,8 @@ recipesdat<-recipesdat %>% filter(n_ratings != 2031) %>% drop_na(n_ratings)  #ha
 For the purpose of the project, predictors of interest would be in terms of convience (this means including prep time, cook time, number of steps, number of ingredients, servings).
 ```{r}
 set.seed(9)
-# Randomly sample half of the data for training as shown in lab 8
 
+# Randomly sample half of the data for training as shown in lab 8
 recipe_index_train = createDataPartition(y = recipesdat$n_ratings, 
                                   times = 1, p = 0.5, list = FALSE)
 recipe_train_set = slice(recipesdat, recipe_index_train)
@@ -73,8 +73,7 @@ The tree suggests that the recipes with higher cook time corresponds to lower to
 
 
 
-
-#Predicting popularity now including Cuisine Categories 
+#Predicting Popularity Now including Cuisine Categories 
 
 In the RecipeTin website, there are technically 9 cusine categories (Asian,French,Greek,Indian,Italian,Mediterranean,Mexican,Middle Eastern, and South America). Yet, it turns out there is actually 178 different type of cuisine categories in this website after webscrapping, making it difficult to have cuisine as a predictor. We do wonder in that if the type od cuisine plays any role in popularity of a recipe and wanted to create a world map of the different types of cuisines (which is shown later on). We all experienced at some point random cravings of certain types of food. With that said, let us explore the relationship between number of ratings and different types of cuisines. In order to see the correlation and include the `cuisine` predictor in the decision tree model, we regrouped the 178 different types of cuisines from this websites into 12 categories (similar to the cuisine category from the 1) European/Western, 2) Americanized_cultural_food,3) Asian, 4) Australian,5) French,6) Indian,7) Italian,8)Mediterranean,9) Mexican, 10) Middle Eastern, 11) South American/Caribbean, and 12) other which includes categories of dog food, holidays, and categories not in particular to region.
 
@@ -83,12 +82,9 @@ In the RecipeTin website, there are technically 9 cusine categories (Asian,Frenc
 recipesdat_new<-recipesdat %>% 
   mutate(cuisine = recode(cuisine, 
 `American, Western`= "European/Western",
-`Any flavour you want!, Western`="European/Western",
 `American, Thanksgiving`="European/Western",
-`BBQ, Southern, Texas, Western`="European/Western",
 `Western`="European/Western",
 `Western food`="European/Western",
-`Universal, Western`="European/Western",
 `British, UK, Western`="European/Western",
 `British, Western`="European/Western",
 `English, South Western`="European/Western",
@@ -109,14 +105,8 @@ recipesdat_new<-recipesdat %>%
 `German`="European/Western",
 `German, Western`="European/Western",
 `Scottish, Western`="European/Western",
-`South Western`="European/Western",
-`South Western`="European/Western",
-`Southern, Western`="European/Western",
-`South Western, Western`="European/Western",
 `Nordic`="European/Western",
 `Irish`="European/Western",
-`Christmas, Holiday, Western`="European/Western",
-
 
 
 
@@ -144,9 +134,13 @@ recipesdat_new<-recipesdat %>%
 `Chinese American`="Americanized_cultural_food",
 `Hawaiian, Tropical!,`="Americanized_cultural_food",
 `Hawaiian, Tropical!`="Americanized_cultural_food",
-`Tropical!, Western`="European/Western",
-
-
+`BBQ, Southern, Texas, Western`="Americanized_cultural_food",
+`Tropical!, Western`="Americanized_cultural_food",
+`Any flavour you want!, Western`="Americanized_cultural_food",
+`Southern, Western`="Americanized_cultural_food",
+`Universal, Western`="Americanized_cultural_food",
+`South Western`="Americanized_cultural_food",
+`South Western, Western`="Americanized_cultural_food",
 
 `Asian`="Asian",
 `Asian influence`="Asian",
@@ -305,7 +299,8 @@ recipesdat_new<-recipesdat %>%
 `Sides`="Other",
 `Easter`="Other",
 `Festive`="Other",
-`Christmas, thannksgiving`="Other"
+`Christmas, thannksgiving`="Other",
+`Christmas, Holiday, Western`="Other"
 
 
 )) 
@@ -339,17 +334,26 @@ class(recipesdat_new$cuisine)
 
 
 ```{r}
+recipesdat_new%>%drop_na(cuisine)%>%
+  ggplot(aes(n_ratings, cuisine)) + 
+  geom_bar(stat = "identity", width=0.5, fill=4, col = "blue2") +
+  xlab("Number of Ratings") + ggtitle("Total Number of Ratings per Cuisine Category")
+```
+
+
+```{r}
 
 library(ggpubr)
 
 p1<-recipesdat_new%>%drop_na(cuisine)%>%
-  ggplot(aes(x=cuisine_cat,y=n_ratings,color=cuisine)) + geom_boxplot() 
+  ggplot(aes(x=cuisine_cat,y=n_ratings,color=cuisine)) + geom_boxplot() +
+  xlab("cuisine category")+ylab("number of ratings") +ggtitle("Number of Ratings per cuisine category")
   
 
 p1+ stat_compare_means() 
 ```
 
-Here we see there is a significance between the different types of cuisines and number of ratings but it is not enough for us to say the category/type of cuisine is a predictor for popularity of recipe. We explore more by fitting a decision tree and linear regression model including the cuisine type variable now.
+Here we see there is a significance between the different types of cuisines and number of ratings but it is not enough for us to say the category/type of cuisine is a predictor for popularity of recipe. We explore more by fitting a decision tree and linear regression model including the cuisine type variable now. In terms of the most popular cuisine category, the European/Western category has the most total number of ratings than all the other cuisine categories. This however is not enough to imply that the type of cuisine plays a factor in predicting popularity in recipes given that the way the website identified the cuisine type of a recipe as Western was general. The type of cuisine categories breakdown is explained on the README file. Let us now explore the type of cuisine variable as a potential predictor.
 
 
 
