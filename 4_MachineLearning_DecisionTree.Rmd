@@ -1,0 +1,385 @@
+---
+title: "Machine Learning - Decision Tree and Exploring cuisine type variable"
+author: "Ligia Flores"
+date: "12/03/2021"
+output:
+  html_document: default
+---
+
+```{r, message=FALSE, warning=FALSE, echo=FALSE}
+library(tidyverse)
+library(splitstackshape)
+library(caret)
+library(tree)
+library(MASS)
+library(pROC)
+library(rpart)
+library(randomForest)
+library(knitr)
+```
+
+## Predicting Recipe Popularity via Decision Tree
+Continuing the section of machine learning, let us predict recipe popularity by fitting decision tree model.
+
+
+```{r}
+#loading in dataset,removing outlier,and ping NAs
+recipesdat<-read.csv(file = "recipes_final.csv")
+recipesdat<-recipesdat %>% filter(n_ratings != 2031) %>% drop_na(n_ratings)  #have 1116 obs.
+
+```
+
+For the purpose of the project, predictors of interest would be in terms of convience (this means including prep time, cook time, number of steps, number of ingredients, servings).
+```{r}
+set.seed(9)
+
+# Randomly sample half of the data for training as shown in lab 8
+recipe_index_train = createDataPartition(y = recipesdat$n_ratings, 
+                                  times = 1, p = 0.5, list = FALSE)
+recipe_train_set = slice(recipesdat, recipe_index_train)
+recipe_test_set = slice(recipesdat, -recipe_index_train)
+# Print a summary of the tree
+
+fit_lm = lm(n_ratings ~ cook_time + prep_time + n_ingredients + servings+
+                           n_steps, data = recipe_train_set)
+summary(fit_lm)
+
+
+```
+Fitting a linear regression model with lm that predicts number of ratings using cook time,prep time,servings, number of ingredients, and number of steps in the training data we can see that only the coeficients for cook time is significant at a 0.05 threshold.
+
+
+
+
+```{r}
+# Use tree for prediction
+fit_regtree = tree(n_ratings~cook_time + prep_time + n_ingredients + servings + 
+                           n_steps, data = recipe_train_set)
+
+plot(fit_regtree)
+text(fit_regtree, pretty = 0)
+```
+The tree suggests that the recipes with higher cook time corresponds to lower total number of ratings and includes the variable that we identified as being significant in the linear model (`n_rating`), plus number of steps and number of ingredients.
+
+
+
+
+
+
+
+
+
+
+
+
+
+#Predicting Popularity Now including Cuisine Categories 
+
+In the RecipeTin Eats website, there are  9 cuisine categories (Asian,French,Greek,Indian,Italian,Mediterranean,Mexican,Middle Eastern, and South America). Yet, it turns out there is actually 178 different type of cuisine categories in this website after webscraping, making it difficult to have cuisine as a predictor. We do wonder in that if the type of cuisine plays any role in popularity of a recipe and wanted to create a world map of the different types of cuisines (which is shown later on). We all experienced at some point random cravings of certain types of food. With that said, let us explore the relationship between number of ratings and different types of cuisines. In order to see the correlation and include the `cuisine` predictor in the decision tree model, we regrouped the 178 different types of cuisines from this website into 12 categories (similar to the cuisine category displayed on recipetin eats website). The categories are: 1) European/Western, 2) Americanized_cultural_food,3) Asian, 4) Australian,5) French,6) Indian,7) Italian,8)Mediterranean,9) Mexican, 10) Middle Eastern, 11) South American/Caribbean, and 12) Other which includes categories of dog food, holidays, and categories not in particular to regions.
+
+
+```{r}
+recipesdat_new<-recipesdat %>% 
+  mutate(cuisine = recode(cuisine, 
+`American, Western`= "European/Western",
+`American, Thanksgiving`="European/Western",
+`Western`="European/Western",
+`Western food`="European/Western",
+`British, UK, Western`="European/Western",
+`British, Western`="European/Western",
+`English, South Western`="European/Western",
+`European, Western`="European/Western",
+`Austrian, German, Western`="European/Western",
+`Spanish`="European/Western",
+`Spanish Style`="European/Western",
+`Spanish Style, Western`="European/Western",
+`Bavarian, German`="European/Western",
+`British, English, Western`="European/Western",
+`American`="European/Western",
+`Russian`="European/Western",
+`Russian, Western`="European/Western",
+`Russian(ish), Western`="European/Western",
+`swedish`="European/Western",
+`Swiss, Western`="European/Western",
+`Western, Western – Holiday Sides`="European/Western",
+`German`="European/Western",
+`German, Western`="European/Western",
+`Scottish, Western`="European/Western",
+`Nordic`="European/Western",
+`Irish`="European/Western",
+
+
+
+
+`American Chinese`="Americanized_cultural_food",
+`American Chinese, Asian, Chinese`="Americanized_cultural_food",
+`American Chinese, Asian, Chinese, Western`="Americanized_cultural_food",
+`American Chinese, Chinese`="Americanized_cultural_food",
+`American-Italian`="Americanized_cultural_food",
+`American-Italian, Italian`="Americanized_cultural_food",
+`American-Italian, Italian, Western`="Americanized_cultural_food",
+`American, Jewish`="Americanized_cultural_food",
+`American, Southern, Western`="Americanized_cultural_food",
+`American, Tex-Mex`="Americanized_cultural_food",
+`Cajun, Louisiana, New Orleans`="Americanized_cultural_food",
+`Hawaiian`="Americanized_cultural_food",
+`American Chinese, Asian`="Americanized_cultural_food",
+`American Chinese, Sichuan, Szechuan`="Americanized_cultural_food",
+`American-Italian, Western`="Americanized_cultural_food",
+`American, Cajun`="Americanized_cultural_food",
+`American, Southern`="Americanized_cultural_food",
+`Western Chinese`="Americanized_cultural_food",
+`Southern`="Americanized_cultural_food",
+`Louisiana, Southern`="Americanized_cultural_food",
+`Chinese American`="Americanized_cultural_food",
+`Hawaiian, Tropical!,`="Americanized_cultural_food",
+`Hawaiian, Tropical!`="Americanized_cultural_food",
+`BBQ, Southern, Texas, Western`="Americanized_cultural_food",
+`Tropical!, Western`="Americanized_cultural_food",
+`Any flavour you want!, Western`="Americanized_cultural_food",
+`Southern, Western`="Americanized_cultural_food",
+`Universal, Western`="Americanized_cultural_food",
+`South Western`="Americanized_cultural_food",
+`South Western, Western`="Americanized_cultural_food",
+
+`Asian`="Asian",
+`Asian influence`="Asian",
+`Asian-esque`="Asian",
+`Asian-syle`="Asian",
+`Asian, Chinese`="Asian",
+`Asian, Fusion, Korean`="Asian",
+`Asian, Indonesian`="Asian",
+`Asian, Japanese`="Asian",
+`Asian, Japanese, Western`="Asian",
+`Asian, Korean, Modern Asian`="Asian",
+`Asian, Malaysian`="Asian",
+`Asian, Malaysian, South East Asian`="Asian",
+`Asian, Thai`="Asian",
+`Asian, Vietnamese`="Asian",
+`Japanese`="Asian",
+`Japanese, Modern Asian`="Asian",
+`Japanese(ish), Modern Asian`="Asian",
+`Korean`="Asian",
+`Modern Vietnamese`="Asian",
+`Thai`="Asian",
+`Thai-ish`="Asian",
+`Thai, Tropical!`="Asian",
+`Vietnamese`="Asian",
+`Singapore`="Asian",
+`Bali, Indonesian`="Asian",
+`Chinese`="Asian",
+`Filipino`="Asian",
+`Asian influence, Mexican, South American`="Asian",
+`Asian-esque, Western`="Asian",
+`Asian, BBQ, Korean`="Asian",
+`Asian, Chinese, Hong Kong, Singapore`="Asian",
+`Asian, Chinese, Japanese`="Asian",
+`Asian, Chinese, Japanese, Korean, Thai, Vietnamese`="Asian",
+`Asian, Hawaiian, Japanese(ish), Western`="Asian",
+`Asian, Indian, Western`="Asian",
+`Asian, Indonesian, Malaysian`="Asian",
+`Asian, Korean`="Asian",
+`Asian, Modern Asian`="Asian",
+`Asian, Modern Asian, Thai`="Asian",
+`Asian, Modern Vietnamese, Thai`="Asian",
+`Asian, Thai-ish`="Asian",
+`Asian, Thai, Vietnamese`="Asian",
+`Chinese, Sichuan`="Asian",
+`Malaysian`="Asian",
+`Indonesian`="Asian",
+`Modern Asian, South American`="Asian",
+
+`Aussie`="Australian",
+`Australia`="Australian",
+`Aussien`="Australian",
+`Australia, British, Western`="Australian",
+`Australia, Western`="Australian",
+`Australian`="Australian",
+`Australian, British, Western`="Australian",
+`Australian, English`="Australian",
+`Australian, Western`="Australian",
+`Australian, British`="Australian",
+`Australian, English, Western`="Australian",
+`Australian, New Zealand, UK`="Australian",
+
+
+
+
+
+
+`French`="French",
+`French-ish`="French",
+`French, Italian`="French",
+`French, Western`="French",
+`French influence`="French",
+`French-ish, Western`="French",
+`French-style`="French",
+`French(ish)`="French",
+
+
+
+
+
+`Indian`="Indian",
+`Indian, Middle Eastern`="Indian",
+`Indian, Nepalese`="Indian",
+
+
+
+`Italian`="Italian",
+`Italian-esque`="Italian",
+`Italian-esque, Western`="Italian",
+`Italian, Western`="Italian",
+`Italia`="Italian",
+`Italian`="Italian",
+
+
+
+`Contemporary Middle Eastern`="Mediterranean",
+`Contemporary Middle Eastern, Western - Holiday`="Mediterranean",
+`Greek`="Mediterranean",
+`Turkish`="Mediterranean",
+`Mediterranean, Middle Eastern, Syrian`="Mediterranean",
+`Mediterranean, Middle Eastern, Turkish`="Mediterranean",
+`Mediterranean, Western`="Mediterranean",
+`Greek, Mediterranean`="Mediterranean",
+`Greek(ish), Western`="Mediterranean",
+
+
+
+`Mexican`="Mexican",
+`Mexican - My Way`="Mexican",
+`Mexican-esque`="Mexican",
+`Tex-Mex`="Mexican",
+`Mexican, Spanish`="Mexican",
+`Mexican, Tex-Mex`="Mexican",
+`Tex-Mex, Western`="Mexican",
+`Mexican, Western`="Mexican",
+
+
+
+`Middle Easter / Moroccan`="Middle Eastern",
+`Middle Eastern`="Middle Eastern",
+`Middle Eastern-ish`="Middle Eastern",
+`Middle Eastern, Moroccan`="Middle Eastern",
+`Middle Eastern, Turkish`="Middle Eastern",
+`Persian`="Middle Eastern",
+`Israeli, Middle Eastern, North African`="Middle Eastern",
+`Arabic, Middle Eastern`="Middle Eastern",
+`Arabic, Middle Eastern, Moroccan`="Middle Eastern",
+`Middle Eastern, Western`="Middle Eastern",
+`Contemporary Middle Eastern, Western – Holiday` ="Middle Eastern",
+`Contemporary Middle Eastern, Western - Holiday Sides`="Middle Eastern",
+
+`Cuban, South American`="South American/Caribbean",
+`South American`="South American/Caribbean",
+`Caribbean, Trinidad`="South American/Caribbean",
+`Argentinian`="South American/Caribbean",
+`Cajun`="South American/Caribbean",
+`Caribbean`="South American/Caribbean",
+`Caribbean, Cuban`="South American/Caribbean",
+`Caribbean, Jamaican`="South American/Caribbean",
+`Peruvian, South American`="South American/Caribbean",
+`Tropical!`="South American/Caribbean",
+`Portuguese`="South American/Caribbean",
+`Cuban, Western`="South American/Caribbean",
+`Brazilian`="South American/Caribbean",
+`Brazilian, South American`="South American/Caribbean",
+
+
+
+`Fusion`="Other",
+`Dessert`="Other",
+`Dinner`="Other",
+`Dog Food`="Other",
+`Baking`="Other",
+`Christmas, Festive`="Other",
+`Christmas, Holiday, Western`="Other",
+`Christmas, thanksgiving`="Other",
+`Sides`="Other",
+`Easter`="Other",
+`Festive`="Other",
+`Christmas, thannksgiving`="Other",
+`Christmas, Holiday, Western`="Other"
+
+
+)) 
+
+```
+
+
+```{r}
+recipesdat_new<-recipesdat_new %>% 
+  mutate(cuisine_cat = recode(cuisine, 
+                              "European/Western" = "4",
+                                        "Americanized_cultural_food" = "1",
+                                        "Asian" = "2",
+                                        "Australian"="3",
+                                        "French"="5",
+                                        "Indian"="6",
+                                        "Italian"="7",
+                                        "Mediterranean"="8",
+                                        "Mexican"="9",
+                                        "Middle Eastern"="10",
+                                        "South American/Caribbean"="12",
+                                        "Other"="11"
+                                        ))
+
+
+recipesdat_new = recipesdat_new %>%
+  mutate(cuisine= factor(cuisine))
+
+class(recipesdat_new$cuisine)  
+```
+
+
+```{r}
+recipesdat_new%>%drop_na(cuisine)%>%
+  ggplot(aes(n_ratings, cuisine)) + 
+  geom_bar(stat = "identity", width=0.5, fill=4, col = "blue2") +
+  xlab("Number of Ratings") + ggtitle("Total Number of Ratings per Cuisine Category")
+```
+
+
+```{r}
+
+library(ggpubr)
+
+p1<-recipesdat_new%>%drop_na(cuisine)%>%
+  ggplot(aes(x=cuisine_cat,y=n_ratings,color=cuisine)) + geom_boxplot() +
+  xlab("cuisine category")+ylab("number of ratings") +ggtitle("Number of Ratings per Cuisine Category")
+  
+
+p1+ stat_compare_means() 
+```
+
+Here we see there is a significance between the different types of cuisines and number of ratings but it is not enough for us to say the category/type of cuisine is a predictor for popularity of recipe. We explore more by fitting a decision tree and linear regression model including the cuisine type variable now. In terms of the most popular cuisine category, the European/Western category has the most total number of ratings than all the other cuisine categories. This however is not enough to imply that the type of cuisine plays a factor in predicting popularity in recipes given that the way the website identified the cuisine type of a recipe as Western was general. The type of cuisine categories breakdown is explained on the README file. Let us now explore the type of cuisine variable as a potential predictor.
+
+
+
+```{r}
+
+#recipesdat_new
+set.seed(123)
+recipe_index_train = createDataPartition(y = recipesdat_new$n_ratings, 
+                                  times = 1, p = 0.5, list = FALSE)
+recipe_train_set = slice(recipesdat_new, recipe_index_train)
+recipe_test_set = slice(recipesdat_new, -recipe_index_train)
+
+fit_regtree = tree(n_ratings~cook_time + prep_time + n_ingredients + servings + cuisine_cat+
+                           n_steps, data = recipe_train_set)
+
+plot(fit_regtree)
+text(fit_regtree, pretty = 0)
+```
+
+
+```{r}
+fit_lm = lm(n_ratings ~ cook_time + prep_time + n_ingredients + servings + cuisine+
+                           n_steps, data = recipe_train_set)
+summary(fit_lm)
+
+```
+
+
+Here we can see although we added the new predictor variable `cuisine`, the significant predictor is still cook time. Exploring still on the cuisine categories, we will look at a world map/heat map of the different cuisines we have here.
