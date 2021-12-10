@@ -65,47 +65,39 @@ Looking at the scatterplots we do not see any relationship patterns between reci
 ### Exploring Recipe popularity by Cuisine 
 
 
+We next wanted to explore recipe popularity by cuisine. The categories are: 1) European/Western, 2) Americanized_cultural_food,3) Asian, 4) Australian,5) French,6) Indian,7) Italian,8) Mediterranean,9) Mexican, 10) Middle Eastern, 11) South American/Caribbean, and 12) Other which includes categories of dog food, holidays, and categories not in particular to regions.The type of cuisine categories breakdown is explained on the README file.
 
+
+![](cuisine_cat_barplot.png)
+
+As shown above, in terms of the most popular cuisine category, the European/Western category has the most total number of ratings compared to the other cuisine categories. This however is not enough to imply that the type of cuisine plays a factor in predicting popularity in recipes given that the way the website identified the cuisine type of a recipe as Western was general.Let us now explore the type of cuisine variable as a potential predictor.
+
+![](cuisine_cat_boxplot.png)
+
+Here we see there is a significance between the different types of cuisines and number of ratings but it is not enough for us to say the category/type of cuisine is a predictor for popularity of recipe. We will now explore more by fitting a decision tree and linear regression model with and without the cuisine category variable.
 
 
 ### Decision Tree Results
 
-Continuing the section of machine learning, let us predict recipe popularity by fitting decision tree model.
+Let us now predict recipe popularity by fitting decision tree model.
 For the purpose of the project, predictors of interest would be in terms of convenience (this means including prep time, cook time, number of steps, number of ingredients, servings).
 
-Before fitting a decision tree model, we first fitted a linear regression model with lm that predicts number of ratings using cook time,prep time,servings, number of ingredients, and number of steps in the training data.
-The linear regression model summary showed that only the coefficient for cook time is significant at a 0.05 threshold.
+From preliminary analysis (by a linear regression model), we found that that only the coefficient for cook time is significant at a 0.05 threshold.
 
 Now fitting a decision tree model that predicts `n_ratings` using cook time,prep time,servings, number of ingredients, and number of steps in the training data, we get the following decision tree:
 
 ![](decisiontree1.png)
 
-The tree suggests that the recipes with higher cook time corresponds to lower total number of ratings and includes the variable that we identified as being significant in the linear model (`n_rating`), plus number of steps and number of ingredients.
-
-### Exploring Cuisine Categories as Potential Predictor For Decision Tree Model
-
-In the RecipeTin Eats website, there are  9 cuisine categories (Asian,French,Greek,Indian,Italian,Mediterranean,Mexican,Middle Eastern, and South America). Yet, it turns out there is actually 178 different type of cuisine categories in this website after webscraping, making it difficult to have cuisine as a predictor. We do wonder in that if the type of cuisine plays any role in popularity of a recipe and wanted to create a world map of the different types of cuisines (which is shown later on). We all experienced at some point random cravings of certain types of food. With that said, let us explore the relationship between number of ratings and different types of cuisines. In order to see the correlation and include the `cuisine` predictor in the decision tree model, we regrouped the 178 different types of cuisines from this website into 12 categories (similar to the cuisine category displayed on recipetin eats website). The categories are: 1) European/Western, 2) Americanized_cultural_food,3) Asian, 4) Australian,5) French,6) Indian,7) Italian,8)Mediterranean,9) Mexican, 10) Middle Eastern, 11) South American/Caribbean, and 12) Other which includes categories of dog food, holidays, and categories not in particular to regions.
+The tree suggests that the recipes with higher cook time corresponds to higher total number of ratings and includes the variable that we identified as being significant in the linear model (`n_rating`), plus number of steps and number of ingredients.
 
 
-![](cuisine_cat_boxplot.png)
-
-Here we see there is a significance between the different types of cuisines and number of ratings but it is not enough for us to say the category/type of cuisine is a predictor for popularity of recipe. We explore more by fitting a decision tree and linear regression model including the cuisine type variable now. 
-
-![](cuisine_cat_barplot.png)
-
-In terms of the most popular cuisine category, the European/Western category has the most total number of ratings than all the other cuisine categories. This however is not enough to imply that the type of cuisine plays a factor in predicting popularity in recipes given that the way the website identified the cuisine type of a recipe as Western was general. The type of cuisine categories breakdown is explained on the README file. Let us now explore the type of cuisine variable as a potential predictor.
-
-We first fitted a linear regression model with lm that predicts number of ratings using cook time,prep time,servings, number of ingredients,number of steps, and now cuisine type in the training data.
-The linear regression model summary again showed that only the coefficient for cook time is significant at a 0.05 threshold.
-
-Now fitting a decision tree model that predicts `n_ratings` using cook time,prep time,servings, number of ingredients, number of steps, and now cuisine type in the training data, we get the following decision tree:
+Now fitting a decision tree model now including the cuisine type in the training data, we get the following decision tree:
 
 ![](decisiontree2.png)
 
 
-Here we can also see that although we added the new predictor variable `cuisine`, the significant predictor is still cook time and the variables included in the decision tree has not changed. 
+Here we can also see that although we added the new predictor variable cuisine, the significant predictor is still cook time and the variables included in the decision tree has not changed.
 
-Exploring still on the cuisine categories, we will now look at a world map/heat map of the different cuisines we have here.
 
 
 ###  Random Forest Results
