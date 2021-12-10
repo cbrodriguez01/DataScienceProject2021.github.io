@@ -20,12 +20,13 @@
   
   - Data set created by the webscraping
   - The variables available are described below:
-    - _recipe_: Name of the recipe
+  
+    - *recipe_*: Name of the recipe
     - *cook_time*: Amount of time the recipe takes to actively cook (minutes)
-    - *prep_time*: Amount of preparationt time the recipe takes (minutes)
+    - *prep_time*: Amount of preparation time the recipe takes (minutes)
     - *course*: Course of the recipe (ex: main)
     - *cuisine*: Type of cuisine. This could be a single string or a list
-    - *rating*: The average rating of the recipe form 1-5
+    - *rating*: The average rating of the recipe from 1-5
     - *n_ratings*: The number of ratings the recipe has
     - *servings*: Number of servings the recipe yields
     - *ingredients*: List of ingredients used in the recipe, separated by a semicolon
